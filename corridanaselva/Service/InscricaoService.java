@@ -24,15 +24,13 @@ public class InscricaoService {
 
     public Inscricao salvarIncricao(Inscricao inscricao) {
 
-        Maratonista maratonista = new Maratonista();
+        Maratonista maratonista = maratonistaRepository.findById(inscricao.getMaratonista().getId()).get();
 
         Circuito circuito = circuitoRepository.findById(inscricao.getCircuito().getId()).get();
 
-        double idade = maratonistaRepository.findById(maratonista.getId()).get().getId();
-
        switch (circuito.getCategoria()) {
            case PEQUENO:
-               if (idade > 18) {
+               if (maratonista.getIdade() > 18) {
                    inscricao.setValorInscricao(1300.0);
                } else {
                    inscricao.setValorInscricao(1500.0);
@@ -40,14 +38,13 @@ public class InscricaoService {
                break;
 
            case MEDIO:
-           if (idade > 18) {
+           if (maratonista.getIdade() > 18) {
                inscricao.setValorInscricao(2300.0);
            } else {
                inscricao.setValorInscricao(2200.0);
            }
 
-
-           if (idade >= 18) {
+           if (maratonista.getIdade() >= 18) {
                inscricao.setValorInscricao(2800.0);
            }else {
                throw new IllegalArgumentException("Sua idade não esta de acordo com as normas da maratona");
